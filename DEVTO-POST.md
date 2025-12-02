@@ -3,7 +3,7 @@ title: Building a Horror Game in 8 Hours with Kiro AI - My Kiroween Hackathon Jo
 published: false
 description: How I used Kiro's CLI, MCP servers, and spec-driven development to build a psychological horror CRT terminal in record time
 tags: ai, hackathon, webdev, gamedev
-cover_image: https://github.com/MasihMoafi/kiroween/raw/main/public/kiro.png
+cover_image: https://github.com/MasihMoafi/kiroween/raw/main/public/image.png
 ---
 
 # Building a Horror Game in 8 Hours with Kiro AI
