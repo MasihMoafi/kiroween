@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STATIC | Layers of Fear</title>
+    <meta name="description" content="A psychological horror experience. Built for Kiroween 2025." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              phosphor: {
+                DEFAULT: '#33ff33',
+                dim: '#1a801a',
+                bg: '#0a1a0a',
+              },
+            },
+            animation: {
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'flicker': 'flicker 0.1s infinite',
+            },
+            keyframes: {
+              flicker: {
+                '0%, 100%': { opacity: '1', transform: 'scale(1) translateY(0)' },
+                '25%': { opacity: '0.8', transform: 'scale(0.95) translateY(-2px)' },
+                '50%': { opacity: '0.95', transform: 'scale(1.05) translateY(2px)' },
+                '75%': { opacity: '0.85', transform: 'scale(0.98) translateY(-1px)' },
+              },
+              'collapse-h': {
+                '0%': { height: '2px', width: '100%', opacity: '1' },
+                '50%': { height: '2px', width: '100%', opacity: '1' },
+                '100%': { height: '0px', width: '0%', opacity: '0' }
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+      body {
+        background-color: #050505;
+        overflow: hidden;
+        font-family: 'Courier Prime', monospace;
+      }
+      
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .scrollbar-hide {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+      }
+    </style>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+    
+    <!-- Advanced SVG Filters -->
+    <svg style="display: none;">
+      <defs>
+        <filter id="noise">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
+          <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 -0.2" />
+        </filter>
+      </defs>
+    </svg>
+  </body>
+</html>

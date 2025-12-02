@@ -1,0 +1,7 @@
+{
+  "name": "Layers of Static",
+  "description": "A Cold War era interrogation room simulation with a CRT terminal interface powered by Gemini.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

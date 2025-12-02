@@ -1,0 +1,812 @@
+/* LAYERS OF STATIC - Black Ops Interrogation Room CRT Terminal */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Phosphor colors */
+  --phosphor: #a8e6a3;
+  --phosphor-bright: #c8ffc3;
+  --phosphor-dim: #5a8a55;
+  --screen-bg: #0d120c;
+  
+  /* TV body colors */
+  --tv-body: #3d3830;
+  --tv-dark: #2a2520;
+  --tv-light: #4a4238;
+  --tv-bezel: #35302a;
+  
+  /* Room atmosphere */
+  --room-bg: #0a0908;
+  --glow-green: rgba(100, 180, 100, 0.4);
+  --glow-red: rgba(180, 50, 50, 0.25);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'VT323', monospace;
+  background: var(--room-bg);
+}
+
+/* ============================================
+   INTERROGATION ROOM ENVIRONMENT
+   ============================================ */
+
+#room {
+  width: 100vw;
+  height: 100vh;
+  background: 
+    /* Subtle vignette */
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.7) 100%),
+    /* Green glow from TV area */
+    radial-gradient(ellipse 50% 40% at 45% 45%, rgba(80, 140, 80, 0.12) 0%, transparent 70%),
+    /* Red ambient in background */
+    radial-gradient(ellipse 40% 50% at 85% 55%, rgba(140, 40, 40, 0.1) 0%, transparent 60%),
+    /* Base gradient */
+    linear-gradient(180deg, #0c0a08 0%, #0a0908 50%, #0e0c0a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  perspective: 1200px;
+}
+
+/* Overhead interrogation light cone */
+#light-overhead {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 500px;
+  background: 
+    radial-gradient(ellipse 60% 100% at 50% 0%, 
+      rgba(220, 210, 180, 0.08) 0%, 
+      rgba(200, 190, 160, 0.04) 20%,
+      rgba(180, 170, 140, 0.02) 40%,
+      transparent 70%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Green glow emanating from TV screen */
+#light-glow-green {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse 60% 50% at 50% 40%, var(--glow-green) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 1;
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+/* Red ambient lighting in background */
+#light-glow-red {
+  position: absolute;
+  top: 30%;
+  right: 5%;
+  width: 500px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, var(--glow-red) 0%, transparent 60%);
+  pointer-events: none;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.8; }
+}
+
+/* Dust/grime texture overlay */
+#room-grime {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 200;
+  mix-blend-mode: overlay;
+}
+
+/* ============================================
+   TV STATION (TV + EQUIPMENT RACK)
+   ============================================ */
+
+#tv-station {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  transform: rotateX(2deg);
+  transform-style: preserve-3d;
+}
+
+/* ============================================
+   THE VINTAGE CRT TELEVISION
+   ============================================ */
+
+#tv {
+  position: relative;
+  /* Green glow cast onto surface below */
+  filter: drop-shadow(0 30px 60px rgba(100, 180, 100, 0.15));
+}
+
+/* TV outer body - thick rounded vintage housing */
+#tv-body {
+  display: flex;
+  align-items: stretch;
+  background: 
+    linear-gradient(180deg, 
+      var(--tv-light) 0%, 
+      var(--tv-body) 15%, 
+      var(--tv-bezel) 50%,
+      var(--tv-dark) 100%);
+  border-radius: 25px;
+  padding: 18px;
+  gap: 15px;
+  box-shadow:
+    /* Main shadow */
+    0 25px 80px rgba(0,0,0,0.9),
+    0 15px 40px rgba(0,0,0,0.7),
+    /* Green glow from screen */
+    0 0 120px rgba(100, 180, 100, 0.12),
+    /* Top highlight */
+    inset 0 2px 0 rgba(255,255,255,0.08),
+    /* Bottom shadow */
+    inset 0 -4px 15px rgba(0,0,0,0.4),
+    /* Side depth */
+    inset 3px 0 8px rgba(0,0,0,0.2),
+    inset -3px 0 8px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+/* Subtle texture on TV body */
+#tv-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 25px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23t)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ============================================
+   TV CONTROL BUTTONS (LEFT SIDE)
+   ============================================ */
+
+#tv-controls-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 25px;
+  padding: 15px 8px;
+  min-width: 50px;
+}
+
+.tv-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.1s;
+}
+
+.tv-button:active {
+  transform: scale(0.95);
+}
+
+.tv-button.red {
+  background: 
+    radial-gradient(circle at 30% 30%, #6a3535 0%, #4a2525 50%, #3a1a1a 100%);
+  box-shadow: 
+    inset 0 3px 6px rgba(0,0,0,0.5), 
+    inset 0 -2px 4px rgba(255,255,255,0.05),
+    0 3px 6px rgba(0,0,0,0.4);
+}
+
+.tv-button.green {
+  background: 
+    radial-gradient(circle at 30% 30%, #356a35 0%, #254a25 50%, #1a3a1a 100%);
+  box-shadow: 
+    inset 0 3px 6px rgba(0,0,0,0.5), 
+    inset 0 -2px 4px rgba(255,255,255,0.05),
+    0 3px 6px rgba(0,0,0,0.4);
+}
+
+.button-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.button-light.on {
+  background: radial-gradient(circle at 40% 40%, #8f8 0%, #4f4 60%, #2a2 100%);
+  box-shadow: 
+    0 0 8px #4f4, 
+    0 0 20px rgba(68, 255, 68, 0.6),
+    0 0 40px rgba(68, 255, 68, 0.3);
+  animation: ledPulse 2s ease-in-out infinite;
+}
+
+@keyframes ledPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ============================================
+   TV SCREEN HOUSING & CRT SCREEN
+   ============================================ */
+
+#tv-screen-housing {
+  background: 
+    linear-gradient(180deg, #1a1815 0%, #12100e 50%, #0a0908 100%);
+  border-radius: 20px;
+  padding: 12px;
+  box-shadow: 
+    inset 0 4px 20px rgba(0,0,0,0.9),
+    inset 0 0 3px rgba(0,0,0,1);
+}
+
+#tv-screen {
+  position: relative;
+  width: 560px;
+  height: 400px;
+  background: 
+    radial-gradient(ellipse 120% 120% at 50% 50%, var(--screen-bg) 0%, #080a08 100%);
+  /* Distinctive rounded rectangular CRT shape with curved glass bulge */
+  border-radius: 50% / 8%;
+  overflow: hidden;
+  box-shadow:
+    /* Deep inset for glass depth */
+    inset 0 0 100px rgba(0,0,0,0.95),
+    inset 0 0 50px rgba(0,0,0,0.8),
+    /* Phosphor glow on edges */
+    inset 0 0 5px rgba(168, 230, 163, 0.15),
+    /* External glow */
+    0 0 40px rgba(100, 180, 100, 0.15),
+    0 0 80px rgba(100, 180, 100, 0.08);
+}
+
+/* Screen curvature - darker edges simulating CRT bulge */
+#screen-curve {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50% / 8%;
+  background: 
+    radial-gradient(ellipse 75% 75% at 50% 50%, 
+      transparent 0%, 
+      transparent 50%, 
+      rgba(0,0,0,0.4) 80%,
+      rgba(0,0,0,0.7) 100%);
+  pointer-events: none;
+  z-index: 25;
+}
+
+/* Glass reflection/glare effect */
+#screen-reflection {
+  position: absolute;
+  top: 3%;
+  left: 8%;
+  width: 35%;
+  height: 25%;
+  background: 
+    linear-gradient(145deg, 
+      rgba(255,255,255,0.08) 0%, 
+      rgba(255,255,255,0.03) 40%,
+      transparent 100%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 27;
+  filter: blur(2px);
+}
+
+/* ============================================
+   SCANLINES EFFECT
+   ============================================ */
+
+#scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.35) 2px,
+    rgba(0, 0, 0, 0.35) 4px
+  );
+  pointer-events: none;
+  z-index: 20;
+  animation: scanlineScroll 10s linear infinite;
+}
+
+@keyframes scanlineScroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100px; }
+}
+
+/* ============================================
+   TV STATIC OVERLAY (برفکی)
+   ============================================ */
+
+#static-overlay {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0;
+  z-index: 22;
+  pointer-events: none;
+  animation: staticJump 0.06s steps(4) infinite;
+  mix-blend-mode: screen;
+}
+
+#static-overlay.active { 
+  opacity: 0.9; 
+}
+
+@keyframes staticJump {
+  0% { transform: translate(0, 0) scale(1.05); }
+  25% { transform: translate(-4%, 3%) scale(1.02); }
+  50% { transform: translate(3%, -4%) scale(1.08); }
+  75% { transform: translate(-2%, 2%) scale(1.03); }
+  100% { transform: translate(1%, -1%) scale(1.05); }
+}
+
+/* ============================================
+   TV SPEAKER GRILLE (RIGHT SIDE)
+   ============================================ */
+
+#tv-speaker {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  padding: 25px 12px;
+  background: 
+    linear-gradient(90deg, var(--tv-dark) 0%, var(--tv-bezel) 50%, var(--tv-body) 100%);
+  border-radius: 8px;
+  min-width: 55px;
+}
+
+.speaker-line {
+  width: 40px;
+  height: 5px;
+  background: #12100e;
+  border-radius: 2px;
+  box-shadow: 
+    inset 0 2px 3px rgba(0,0,0,0.9),
+    0 1px 0 rgba(255,255,255,0.03);
+}
+
+/* ============================================
+   TV LEGS
+   ============================================ */
+
+#tv-legs {
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.tv-leg {
+  width: 25px;
+  height: 30px;
+  background: 
+    linear-gradient(180deg, var(--tv-body) 0%, var(--tv-dark) 60%, #1a1815 100%);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 
+    0 5px 15px rgba(0,0,0,0.5),
+    inset 0 -2px 5px rgba(0,0,0,0.3);
+}
+
+/* ============================================
+   EQUIPMENT RACK BELOW TV
+   ============================================ */
+
+#equipment-rack {
+  margin-top: 15px;
+  width: 650px;
+}
+
+#rack-panel {
+  background: 
+    linear-gradient(180deg, #2d2a27 0%, #1f1c1a 40%, #151312 100%);
+  border-radius: 8px;
+  padding: 18px 25px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  box-shadow: 
+    0 15px 40px rgba(0,0,0,0.7),
+    0 5px 15px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 -2px 8px rgba(0,0,0,0.4);
+  border: 1px solid rgba(0,0,0,0.3);
+}
+
+/* Frequency display */
+.rack-display {
+  background: #050505;
+  padding: 10px 18px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  box-shadow: 
+    inset 0 3px 8px rgba(0,0,0,0.9),
+    0 1px 0 rgba(255,255,255,0.03);
+  border: 1px solid #1a1a1a;
+}
+
+.display-text {
+  font-size: 10px;
+  color: #555;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.display-num {
+  font-size: 22px;
+  color: #f84;
+  text-shadow: 
+    0 0 10px rgba(255, 136, 68, 0.8),
+    0 0 20px rgba(255, 136, 68, 0.4);
+  font-family: 'VT323', monospace;
+  animation: displayFlicker 3s ease-in-out infinite;
+}
+
+@keyframes displayFlicker {
+  0%, 90%, 100% { opacity: 1; }
+  92% { opacity: 0.8; }
+  94% { opacity: 1; }
+  96% { opacity: 0.7; }
+}
+
+/* Rotary knobs */
+.rack-knobs {
+  display: flex;
+  gap: 18px;
+}
+
+.rack-knob {
+  width: 32px;
+  height: 32px;
+  background: 
+    radial-gradient(circle at 35% 35%, #555 0%, #3a3a3a 40%, #252525 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 3px 8px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  position: relative;
+}
+
+.rack-knob::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 10px;
+  background: #999;
+  border-radius: 2px;
+}
+
+/* VU meters */
+.rack-meters {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.meter {
+  width: 90px;
+  height: 14px;
+  background: #080808;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 2px 5px rgba(0,0,0,0.9),
+    0 1px 0 rgba(255,255,255,0.02);
+  border: 1px solid #1a1a1a;
+}
+
+.meter-bar {
+  height: 100%;
+  width: 75%;
+  background: linear-gradient(90deg, 
+    #2a2 0%, 
+    #4f4 40%, 
+    #ff4 70%, 
+    #f44 100%);
+  box-shadow: 
+    0 0 8px rgba(68, 255, 68, 0.5),
+    inset 0 0 3px rgba(255,255,255,0.2);
+  animation: meterPulse 1.5s ease-in-out infinite;
+  border-radius: 2px;
+}
+
+@keyframes meterPulse {
+  0%, 100% { width: 65%; }
+  30% { width: 85%; }
+  60% { width: 70%; }
+  80% { width: 90%; }
+}
+
+/* ============================================
+   TERMINAL CONTENT (TEXT AREA)
+   ============================================ */
+
+#terminal-content {
+  position: relative;
+  z-index: 15;
+  color: var(--phosphor);
+  font-size: 18px;
+  line-height: 1.6;
+  padding: 35px;
+  height: 100%;
+  overflow-y: auto;
+  text-shadow: 
+    0 0 8px var(--phosphor),
+    0 0 20px rgba(168, 230, 163, 0.5),
+    0 0 40px rgba(168, 230, 163, 0.2);
+}
+
+#terminal-content::-webkit-scrollbar { 
+  width: 8px; 
+}
+
+#terminal-content::-webkit-scrollbar-track { 
+  background: rgba(0,0,0,0.3); 
+  border-radius: 4px;
+}
+
+#terminal-content::-webkit-scrollbar-thumb { 
+  background: var(--phosphor-dim); 
+  border-radius: 4px;
+}
+
+#terminal-content::-webkit-scrollbar-thumb:hover { 
+  background: var(--phosphor); 
+}
+
+/* ============================================
+   BOOT SEQUENCE TEXT
+   ============================================ */
+
+.boot-line {
+  margin: 4px 0;
+  opacity: 0;
+  animation: bootIn 0.3s forwards;
+}
+
+@keyframes bootIn { 
+  to { opacity: 1; } 
+}
+
+.error-text {
+  color: #f66;
+  text-shadow: 
+    0 0 8px rgba(255, 102, 102, 0.8),
+    0 0 20px rgba(255, 102, 102, 0.4);
+}
+
+/* ============================================
+   CHAT MESSAGES
+   ============================================ */
+
+#messages { 
+  margin-bottom: 20px; 
+}
+
+.message {
+  margin: 10px 0;
+  word-wrap: break-word;
+}
+
+.user-message::before {
+  content: '> ';
+  opacity: 0.7;
+}
+
+.ai-message {
+  opacity: 0.95;
+  padding-left: 15px;
+  border-left: 2px solid var(--phosphor-dim);
+  margin-left: 5px;
+}
+
+.system-message {
+  color: #f66;
+  text-shadow: 
+    0 0 8px rgba(255, 102, 102, 0.7),
+    0 0 15px rgba(255, 102, 102, 0.4);
+  text-align: center;
+  padding: 5px 0;
+}
+
+/* ============================================
+   INPUT LINE
+   ============================================ */
+
+#input-line {
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid rgba(168, 230, 163, 0.1);
+}
+
+.prompt {
+  margin-right: 10px;
+  opacity: 0.8;
+  font-size: 20px;
+}
+
+#user-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--phosphor);
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  text-shadow: 
+    0 0 8px var(--phosphor),
+    0 0 15px rgba(168, 230, 163, 0.4);
+  caret-color: transparent;
+}
+
+.cursor { 
+  animation: blink 0.7s steps(1) infinite;
+  font-size: 20px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ============================================
+   TYPING INDICATOR
+   ============================================ */
+
+.typing-indicator span {
+  animation: dot 1.2s infinite;
+  opacity: 0.3;
+}
+
+.typing-indicator span:nth-child(2) { 
+  animation-delay: 0.2s; 
+}
+
+.typing-indicator span:nth-child(3) { 
+  animation-delay: 0.4s; 
+}
+
+@keyframes dot {
+  0%, 60%, 100% { opacity: 0.3; }
+  30% { opacity: 1; }
+}
+
+/* ============================================
+   SCREEN FLICKER EFFECT
+   ============================================ */
+
+#tv-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 30;
+  animation: screenFlicker 8s infinite;
+  border-radius: 50% / 8%;
+}
+
+@keyframes screenFlicker {
+  0%, 92%, 100% { background: transparent; }
+  93% { background: rgba(168, 230, 163, 0.02); }
+  94% { background: transparent; }
+  95% { background: rgba(255,255,255,0.015); }
+  96% { background: transparent; }
+}
+
+/* ============================================
+   CHROMATIC ABERRATION (SUBTLE)
+   ============================================ */
+
+#tv-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(90deg, 
+      rgba(255,0,0,0.02) 0%, 
+      transparent 3%, 
+      transparent 97%, 
+      rgba(0,0,255,0.02) 100%);
+  pointer-events: none;
+  z-index: 28;
+  border-radius: 50% / 8%;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 800px) {
+  #tv-screen {
+    width: 400px;
+    height: 300px;
+  }
+  
+  #equipment-rack {
+    width: 480px;
+  }
+  
+  #terminal-content {
+    font-size: 15px;
+    padding: 25px;
+  }
+}
+
+@media (max-width: 550px) {
+  #tv-screen {
+    width: 320px;
+    height: 240px;
+  }
+  
+  #equipment-rack {
+    width: 380px;
+  }
+  
+  #tv-controls-left,
+  #tv-speaker {
+    display: none;
+  }
+  
+  #terminal-content {
+    font-size: 14px;
+    padding: 20px;
+  }
+}

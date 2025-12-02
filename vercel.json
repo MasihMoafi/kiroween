@@ -1,0 +1,7 @@
+{
+  "name": "kiroween",
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
+  "devCommand": "vite --port $PORT",
+  "installCommand": "npm install"
+}
